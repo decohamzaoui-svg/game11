@@ -1,0 +1,1672 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BabyTri Land - Apprends à trier en t'amusant !</title>
+    <meta name="description" content="Jeu éducatif pour enfants de 3 à 6 ans. Apprends à trier les déchets, débloque 12 badges impressionnants et 4 personnages magiques !">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Comic Sans MS', 'Arial Rounded MT Bold', 'Segoe UI', sans-serif;
+            background: linear-gradient(180deg, #d5f5ff 0%, #e5f9ff 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Welcome Screen */
+        .welcome-screen {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            text-align: center;
+        }
+
+        .welcome-card {
+            background: white;
+            border-radius: 2rem;
+            padding: 60px 40px;
+            max-width: 700px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .logo-title-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .logo {
+            width: 80px;
+            height: 80px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .welcome-title {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #10b981, #3b82f6, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            animation: sparkle 1.5s ease-in-out infinite;
+        }
+
+        .welcome-subtitle {
+            font-size: 1.8em;
+            color: #64748b;
+            margin-bottom: 40px;
+            font-weight: 600;
+        }
+
+        .emoji-row {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            font-size: 4em;
+        }
+
+        .emoji-row span {
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .emoji-row span:nth-child(2) { animation-delay: 0.2s; }
+        .emoji-row span:nth-child(3) { animation-delay: 0.4s; }
+        .emoji-row span:nth-child(4) { animation-delay: 0.6s; }
+
+        .input-group {
+            margin: 30px 0;
+        }
+
+        .input-label {
+            font-size: 2em;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .name-input {
+            width: 100%;
+            padding: 20px;
+            font-size: 2em;
+            border: 4px solid #cbd5e1;
+            border-radius: 1.5rem;
+            text-align: center;
+            font-family: inherit;
+            transition: all 0.3s ease;
+        }
+
+        .name-input:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn {
+            padding: 20px 50px;
+            font-size: 1.8em;
+            font-weight: bold;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            font-family: inherit;
+            transition: transform 0.2s ease;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #1e293b;
+            border: 4px solid #cbd5e1;
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: scale(1);
+        }
+
+        /* Tutorial Screen */
+        .tutorial-screen {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .tutorial-card {
+            background: white;
+            border-radius: 2rem;
+            padding: 40px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .tutorial-title {
+            font-size: 3em;
+            text-align: center;
+            background: linear-gradient(135deg, #10b981, #3b82f6, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            font-weight: 900;
+        }
+
+        .tutorial-step {
+            display: flex;
+            align-items: start;
+            gap: 20px;
+            padding: 30px;
+            border-radius: 1.5rem;
+            margin-bottom: 20px;
+        }
+
+        .tutorial-step:nth-child(2) { background: rgba(16, 185, 129, 0.1); }
+        .tutorial-step:nth-child(3) { background: rgba(245, 158, 11, 0.1); }
+        .tutorial-step:nth-child(4) { background: rgba(236, 72, 153, 0.1); }
+        .tutorial-step:nth-child(5) { background: rgba(59, 130, 246, 0.1); }
+        .tutorial-step:nth-child(6) { background: rgba(147, 51, 234, 0.1); }
+
+        .tutorial-emoji {
+            font-size: 3.5em;
+            min-width: 70px;
+        }
+
+        .tutorial-content h3 {
+            font-size: 1.8em;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .tutorial-content p {
+            font-size: 1.2em;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            border-radius: 2rem;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .title-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .header-logo {
+            width: 60px;
+            height: 60px;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .title {
+            font-size: 3em;
+            background: linear-gradient(135deg, #10b981, #3b82f6, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            animation: sparkle 1.5s ease-in-out infinite;
+        }
+
+        .scores-container {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .badge-button {
+            background: linear-gradient(135deg, #fcd4e8, #e9d5ff);
+            color: #1e293b;
+            padding: 15px 25px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+            border: none;
+            font-family: inherit;
+        }
+
+        .badge-button:hover {
+            transform: scale(1.05);
+        }
+
+        .badge-emoji {
+            font-size: 2em;
+            animation: bounce 0.6s ease-in-out infinite;
+        }
+
+        .badge-count {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .score-badge {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 4px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .score-emoji {
+            font-size: 2em;
+            animation: bounce 0.6s ease-in-out infinite;
+        }
+
+        .score-number {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        .progress-section {
+            margin-top: 20px;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .progress-bar {
+            height: 20px;
+            background: #e2e8f0;
+            border-radius: 50px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #10b981, #3b82f6);
+            transition: width 0.5s ease-out;
+            border-radius: 50px;
+        }
+
+        /* Sections */
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2em;
+            color: #1e293b;
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        /* Bins */
+        .bins-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .bin {
+            padding: 40px 30px;
+            border-radius: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+
+        .bin:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .bin.active {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.5);
+            animation: bounce 0.6s ease-in-out infinite;
+        }
+
+        .bin.active::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border: 4px dashed white;
+            border-radius: 2rem;
+            animation: pulse 1s ease-in-out infinite;
+        }
+
+        .bin-organic { background: #78350f; }
+        .bin-plastic { background: #eab308; }
+        .bin-glass { background: #10b981; }
+        .bin-paper { background: #3b82f6; }
+
+        .bin-emoji {
+            font-size: 4.5em;
+            margin-bottom: 15px;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .bin:hover .bin-emoji {
+            transform: scale(1.1);
+        }
+
+        .bin-label {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Waste Items */
+        .waste-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 20px;
+        }
+
+        .waste-item {
+            background: white;
+            padding: 20px;
+            border-radius: 1.5rem;
+            text-align: center;
+            cursor: grab;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .waste-item:active {
+            cursor: grabbing;
+        }
+
+        .waste-item:hover {
+            transform: scale(1.1) rotate(3deg);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .waste-item.dragging {
+            opacity: 0.5;
+            transform: scale(0.95);
+        }
+
+        .waste-emoji {
+            font-size: 4em;
+            margin-bottom: 10px;
+            display: block;
+            animation: wiggle 1s ease-in-out infinite;
+        }
+
+        .waste-name {
+            font-size: 1em;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* Characters */
+        .characters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .character-card {
+            background: white;
+            padding: 30px;
+            border-radius: 1.5rem;
+            text-align: center;
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            position: relative;
+        }
+
+        .character-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .character-card.locked {
+            opacity: 0.6;
+            filter: grayscale(1);
+        }
+
+        .character-card.unlocked {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+        }
+
+        .lock-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 1.5rem;
+            backdrop-filter: blur(2px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4em;
+        }
+
+        .character-image {
+            width: 150px;
+            height: 150px;
+            margin-bottom: 15px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .character-card.unlocked .character-image {
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .character-name {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 10px;
+        }
+
+        .character-power {
+            font-size: 1.1em;
+            color: #10b981;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .character-description {
+            font-size: 0.9em;
+            color: #64748b;
+        }
+
+        .unlock-requirement {
+            font-size: 1em;
+            color: #64748b;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        /* Badges Modal */
+        .badges-modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .badges-modal.show {
+            display: flex;
+        }
+
+        .badges-modal-content {
+            background: white;
+            border-radius: 2rem;
+            padding: 40px;
+            max-width: 1000px;
+            max-height: 90vh;
+            overflow-y: auto;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            animation: scaleIn 0.3s ease-out;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: transparent;
+            border: none;
+            font-size: 2.5em;
+            cursor: pointer;
+            color: #64748b;
+            transition: color 0.2s ease;
+        }
+
+        .close-btn:hover {
+            color: #1e293b;
+        }
+
+        .badges-modal-header {
+            margin-bottom: 40px;
+        }
+
+        .badges-modal-emoji {
+            font-size: 6em;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .badges-modal-title {
+            font-size: 3em;
+            background: linear-gradient(135deg, #10b981, #3b82f6, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 20px 0;
+            font-weight: 900;
+        }
+
+        .badges-modal-subtitle {
+            font-size: 1.8em;
+            color: #64748b;
+            font-weight: 600;
+        }
+
+        .badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .badge-card {
+            padding: 25px;
+            border-radius: 1.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            animation: scaleIn 0.5s ease-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badge-card.unlocked {
+            cursor: pointer;
+        }
+
+        .badge-card.unlocked:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .badge-card.locked {
+            opacity: 0.5;
+            filter: grayscale(1);
+        }
+
+        .badge-card.unlocked::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.4), transparent);
+            pointer-events: none;
+        }
+
+        .badge-emoji-icon {
+            font-size: 4em;
+            margin-bottom: 15px;
+        }
+
+        .badge-card.unlocked .badge-emoji-icon {
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .badge-name {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+
+        .badge-description {
+            font-size: 0.9em;
+            color: #64748b;
+        }
+
+        .badge-requirement {
+            font-size: 0.85em;
+            color: #64748b;
+            font-weight: 600;
+            margin-top: 8px;
+        }
+
+        /* Badge colors */
+        .badge-yellow { background: #fef9c3; }
+        .badge-peach { background: #fed7aa; }
+        .badge-pink { background: #fcd4e8; }
+        .badge-mint { background: #d1fae5; }
+        .badge-lavender { background: #e9d5ff; }
+        .badge-aqua { background: #ccfbf1; }
+        .badge-blue { background: #dbeafe; }
+
+        .badges-encouragement {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+            padding: 25px;
+            border-radius: 1.5rem;
+            display: inline-block;
+        }
+
+        .badges-encouragement p {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #1e293b;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 2rem;
+            padding: 50px;
+            max-width: 600px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            animation: scaleIn 0.3s ease-out;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-title {
+            font-size: 3em;
+            background: linear-gradient(135deg, #10b981, #3b82f6, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 30px;
+            font-weight: 900;
+        }
+
+        .modal-character-image {
+            width: 200px;
+            height: 200px;
+            margin: 20px auto;
+            border-radius: 50%;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .modal-character-name {
+            font-size: 2.5em;
+            color: #1e293b;
+            font-weight: bold;
+            margin: 20px 0 10px;
+        }
+
+        .modal-character-power {
+            font-size: 1.5em;
+            color: #10b981;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .modal-character-description {
+            font-size: 1.2em;
+            color: #64748b;
+            margin-bottom: 30px;
+        }
+
+        .modal-congrats {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+            padding: 20px;
+            border-radius: 1.5rem;
+            font-size: 1.3em;
+            color: #10b981;
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        /* Victory Screen */
+        .victory-screen {
+            display: none;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .victory-screen.show {
+            display: block;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        .victory-card {
+            background: white;
+            border-radius: 2rem;
+            padding: 50px;
+            max-width: 1000px;
+            margin: 0 auto;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .victory-trophy {
+            font-size: 8em;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .victory-title {
+            font-size: 3.5em;
+            background: linear-gradient(135deg, #10b981, #3b82f6, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 900;
+            margin: 20px 0;
+        }
+
+        .victory-message {
+            font-size: 1.8em;
+            color: #1e293b;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .victory-score {
+            font-size: 1.5em;
+            color: #64748b;
+            margin-bottom: 40px;
+        }
+
+        .victory-section {
+            margin: 40px 0;
+        }
+
+        .victory-section-title {
+            font-size: 2em;
+            color: #1e293b;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .victory-badges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .victory-badge {
+            padding: 20px;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .victory-badge-emoji {
+            font-size: 3em;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .victory-badge-name {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #1e293b;
+            margin-top: 8px;
+        }
+
+        .victory-characters-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .victory-character {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+            padding: 20px;
+            border-radius: 1.5rem;
+        }
+
+        .victory-character-image {
+            width: 120px;
+            height: 120px;
+            margin: 0 auto 10px;
+            border-radius: 50%;
+        }
+
+        .victory-message-box {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.1), rgba(236, 72, 153, 0.1));
+            padding: 30px;
+            border-radius: 1.5rem;
+            margin: 30px 0;
+        }
+
+        .victory-message-box p {
+            font-size: 1.3em;
+            color: #1e293b;
+            font-weight: bold;
+        }
+
+        /* Feedback */
+        .feedback {
+            position: fixed;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 20px 40px;
+            border-radius: 50px;
+            font-size: 1.5em;
+            font-weight: bold;
+            z-index: 999;
+            display: none;
+            align-items: center;
+            gap: 15px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        .feedback.show {
+            display: flex;
+        }
+
+        .feedback.success {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+
+        .feedback.error {
+            background: #ef4444;
+            color: white;
+        }
+
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            animation: confettiFall 1.5s ease-out forwards;
+            pointer-events: none;
+            z-index: 998;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* Animations */
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-3deg); }
+            50% { transform: rotate(3deg); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @keyframes scaleIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.02); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        @keyframes confettiFall {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(400px) rotate(360deg); opacity: 0; }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .logo { width: 60px; height: 60px; }
+            .header-logo { width: 48px; height: 48px; }
+            .title { font-size: 2em; }
+            .welcome-title { font-size: 2.5em; }
+            .tutorial-title { font-size: 2em; }
+            .score-number { font-size: 1.5em; }
+            .section-title { font-size: 1.5em; }
+            .bin-emoji { font-size: 3em; }
+            .waste-emoji { font-size: 2.5em; }
+            .victory-trophy { font-size: 5em; }
+            .victory-title { font-size: 2.5em; }
+            .modal-content { padding: 30px; }
+            .modal-title { font-size: 2em; }
+            .badges-modal-title { font-size: 2em; }
+            .badges-grid { grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Welcome Screen -->
+        <div id="welcome-screen" class="welcome-screen">
+            <div class="welcome-card">
+                <div class="logo-title-container">
+                    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='90' fill='%2359d5ff' stroke='%2310b981' stroke-width='8'/%3E%3Cpath d='M60 80 L80 60 L100 80 L70 100 Z' fill='%2310b981'/%3E%3Cpath d='M140 80 L120 60 L100 80 L130 100 Z' fill='%2310b981'/%3E%3Cpath d='M100 140 L80 120 L100 100 L120 120 Z' fill='%2310b981'/%3E%3Ccircle cx='85' cy='90' r='8' fill='%23000'/%3E%3Ccircle cx='115' cy='90' r='8' fill='%23000'/%3E%3Ccircle cx='82' cy='88' r='3' fill='%23fff'/%3E%3Ccircle cx='112' cy='88' r='3' fill='%23fff'/%3E%3Cpath d='M75 105 Q100 120 125 105' stroke='%23000' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='90' cy='110' r='6' fill='%23ffc0cb'/%3E%3Ccircle cx='110' cy='110' r='6' fill='%23ffc0cb'/%3E%3C/svg%3E" alt="BabyTri Land Logo" class="logo">
+                    <h1 class="welcome-title">BabyTri Land</h1>
+                </div>
+                
+                <p class="welcome-subtitle">Apprends à trier en t'amusant ! 🎮</p>
+                
+                <div class="emoji-row">
+                    <span>🍌</span>
+                    <span>♻️</span>
+                    <span>⚗️</span>
+                    <span>📦</span>
+                </div>
+
+                <div class="input-group">
+                    <label class="input-label">👋 Comment tu t'appelles ?</label>
+                    <input type="text" id="player-name" class="name-input" placeholder="Ton prénom" maxlength="20">
+                </div>
+
+                <button class="btn btn-primary" id="start-btn" disabled>Commencer ! 🚀</button>
+                <button class="btn btn-secondary" id="tutorial-btn">Comment jouer ? 📚</button>
+            </div>
+        </div>
+
+        <!-- Tutorial Screen -->
+        <div id="tutorial-screen" class="tutorial-screen hidden">
+            <div class="tutorial-card">
+                <h2 class="tutorial-title">📚 Comment jouer ?</h2>
+                
+                <div class="tutorial-step">
+                    <span class="tutorial-emoji">👆</span>
+                    <div class="tutorial-content">
+                        <h3>1. Attrape un déchet</h3>
+                        <p>Clique et maintiens sur un déchet pour le prendre</p>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <span class="tutorial-emoji">🗑️</span>
+                    <div class="tutorial-content">
+                        <h3>2. Mets-le dans la bonne poubelle</h3>
+                        <p>
+                            🍂 Marron = Organique (fruits, légumes)<br>
+                            ♻️ Jaune = Plastique (bouteilles, sacs)<br>
+                            ⚗️ Vert = Verre (bocaux, bouteilles)<br>
+                            📄 Bleu = Papier (journaux, cartons)
+                        </p>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <span class="tutorial-emoji">⭐</span>
+                    <div class="tutorial-content">
+                        <h3>3. Gagne des points</h3>
+                        <p>Chaque bon tri te donne 1 point !</p>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <span class="tutorial-emoji">🎖️</span>
+                    <div class="tutorial-content">
+                        <h3>4. Débloque des badges</h3>
+                        <p>12 badges super impressionnants à collectionner !</p>
+                    </div>
+                </div>
+
+                <div class="tutorial-step">
+                    <span class="tutorial-emoji">✨</span>
+                    <div class="tutorial-content">
+                        <h3>5. Débloque des personnages</h3>
+                        <p>À 3, 6, 9 et 12 points, tu gagneras un ami magique !</p>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" id="back-to-welcome-btn">J'ai compris ! 🎮</button>
+            </div>
+        </div>
+
+        <!-- Feedback Message -->
+        <div class="feedback" id="feedback">
+            <span id="feedback-text"></span>
+        </div>
+
+        <!-- Badges Modal -->
+        <div class="badges-modal" id="badges-modal">
+            <div class="badges-modal-content">
+                <button class="close-btn" id="close-badges-modal">×</button>
+                
+                <div class="badges-modal-header">
+                    <div class="badges-modal-emoji">🎖️</div>
+                    <h2 class="badges-modal-title">Mes Badges</h2>
+                    <p class="badges-modal-subtitle"><span id="badges-count">0</span>/12 débloqués</p>
+                </div>
+
+                <div class="badges-grid" id="badges-grid"></div>
+
+                <div class="badges-encouragement">
+                    <p>⭐ Continue à trier pour débloquer tous les badges ! ⭐</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Character Unlock Modal -->
+        <div class="modal" id="character-modal">
+            <div class="modal-content">
+                <h2 class="modal-title">🎉 Bravo <span id="modal-player-name"></span> ! 🎉</h2>
+                <img id="modal-character-image" class="modal-character-image" src="" alt="">
+                <h3 id="modal-character-name" class="modal-character-name"></h3>
+                <p id="modal-character-power" class="modal-character-power"></p>
+                <p id="modal-character-description" class="modal-character-description"></p>
+                <div class="modal-congrats">
+                    ✨ Tu as maintenant un nouveau compagnon magique ! ✨
+                </div>
+                <button class="btn btn-primary" id="close-modal-btn">Continuer à jouer ! 🎮</button>
+            </div>
+        </div>
+
+        <!-- Victory Screen -->
+        <div id="victory-screen" class="victory-screen hidden">
+            <div class="victory-card">
+                <div class="victory-trophy">🏆</div>
+                <h2 class="victory-title">Félicitations <span id="victory-player-name"></span> ! </h2>
+                <p class="victory-message">Tu as trié tous les déchets !</p>
+                <p class="victory-score">Score final : <span id="final-score">0</span> points ⭐</p>
+
+                <div class="victory-section" id="victory-badges-section" style="display: none;">
+                    <h3 class="victory-section-title">🎖️ Tes badges débloqués</h3>
+                    <div class="victory-badges-grid" id="victory-badges-grid"></div>
+                </div>
+
+                <div class="victory-section" id="victory-characters-section" style="display: none;">
+                    <h3 class="victory-section-title">✨ Tes personnages magiques</h3>
+                    <div class="victory-characters-grid" id="victory-characters-grid"></div>
+                </div>
+
+                <div class="victory-message-box">
+                    <p>🌍 Bravo ! Tu es maintenant un expert du tri ! 🌟</p>
+                    <p style="font-size: 1em; margin-top: 10px;">Continue à trier dans la vraie vie pour protéger notre planète !</p>
+                </div>
+
+                <button class="btn btn-primary" id="replay-btn">Rejouer ! 🔄</button>
+            </div>
+        </div>
+
+        <!-- Game Area -->
+        <div id="game-area" class="hidden">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-top">
+                    <div class="title-container">
+                        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 200'%3E%3Ccircle cx='100' cy='100' r='90' fill='%2359d5ff' stroke='%2310b981' stroke-width='8'/%3E%3Cpath d='M60 80 L80 60 L100 80 L70 100 Z' fill='%2310b981'/%3E%3Cpath d='M140 80 L120 60 L100 80 L130 100 Z' fill='%2310b981'/%3E%3Cpath d='M100 140 L80 120 L100 100 L120 120 Z' fill='%2310b981'/%3E%3Ccircle cx='85' cy='90' r='8' fill='%23000'/%3E%3Ccircle cx='115' cy='90' r='8' fill='%23000'/%3E%3Ccircle cx='82' cy='88' r='3' fill='%23fff'/%3E%3Ccircle cx='112' cy='88' r='3' fill='%23fff'/%3E%3Cpath d='M75 105 Q100 120 125 105' stroke='%23000' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3Ccircle cx='90' cy='110' r='6' fill='%23ffc0cb'/%3E%3Ccircle cx='110' cy='110' r='6' fill='%23ffc0cb'/%3E%3C/svg%3E" alt="BabyTri Land Logo" class="header-logo">
+                        <h1 class="title">BabyTri Land</h1>
+                    </div>
+                    <div class="scores-container">
+                        <button class="badge-button" id="badge-button">
+                            <span class="badge-emoji">🎖️</span>
+                            <span class="badge-count"><span id="unlocked-badges-count">0</span>/12</span>
+                        </button>
+                        <div class="score-badge">
+                            <span class="score-emoji">⭐</span>
+                            <span class="score-number" id="score">0</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="progress-section">
+                    <div class="progress-label">
+                        <span id="progress-label">✨ Prochain personnage</span>
+                        <span id="progress-text">0/3</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill" style="width: 0%"></div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Bins Section -->
+            <section class="section">
+                <h2 class="section-title">🗑️ Poubelles de tri</h2>
+                <div class="bins-grid" id="bins-container">
+                    <div class="bin bin-organic" data-bin="organic">
+                        <span class="bin-emoji">🍂</span>
+                        <span class="bin-label">Organique</span>
+                    </div>
+                    <div class="bin bin-plastic" data-bin="plastic">
+                        <span class="bin-emoji">♻️</span>
+                        <span class="bin-label">Plastique</span>
+                    </div>
+                    <div class="bin bin-glass" data-bin="glass">
+                        <span class="bin-emoji">⚗️</span>
+                        <span class="bin-label">Verre</span>
+                    </div>
+                    <div class="bin bin-paper" data-bin="paper">
+                        <span class="bin-emoji">📄</span>
+                        <span class="bin-label">Papier</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Waste Items Section -->
+            <section class="section">
+                <h2 class="section-title">🎯 Déchets à trier <span id="waste-count">(12)</span></h2>
+                <div class="waste-grid" id="waste-container"></div>
+            </section>
+
+            <!-- Characters Section -->
+            <section class="section">
+                <h2 class="section-title">✨ Mes personnages magiques <span id="character-count">(0/4)</span></h2>
+                <div class="characters-grid" id="characters-container"></div>
+            </section>
+        </div>
+    </div>
+
+    <script>
+        // Données du jeu
+        const wasteItems = [
+            { id: '1', name: 'Banane', emoji: '🍌', correctBin: 'organic' },
+            { id: '2', name: 'Pomme', emoji: '🍎', correctBin: 'organic' },
+            { id: '3', name: 'Carotte', emoji: '🥕', correctBin: 'organic' },
+            { id: '4', name: 'Bouteille', emoji: '🧴', correctBin: 'plastic' },
+            { id: '5', name: 'Sac', emoji: '🛍️', correctBin: 'plastic' },
+            { id: '6', name: 'Jouet', emoji: '🦆', correctBin: 'plastic' },
+            { id: '7', name: 'Pot verre', emoji: '🫙', correctBin: 'glass' },
+            { id: '8', name: 'Bouteille', emoji: '🍷', correctBin: 'glass' },
+            { id: '9', name: 'Bocal', emoji: '⚗️', correctBin: 'glass' },
+            { id: '10', name: 'Journal', emoji: '📰', correctBin: 'paper' },
+            { id: '11', name: 'Carton', emoji: '📦', correctBin: 'paper' },
+            { id: '12', name: 'Livre', emoji: '📚', correctBin: 'paper' }
+        ];
+
+        const characters = [
+            { 
+                id: 'recyclor', 
+                name: 'Recyclor', 
+                emoji: '🤖', 
+                power: 'Le robot écolo',
+                description: 'Recyclor transforme les déchets en objets magiques !',
+                unlockScore: 3,
+                image: 'https://img.sanishtech.com/u/61b4cfe960605813dcdb9c88a00d0127.png'
+            },
+            { 
+                id: 'verdina', 
+                name: 'Verdina', 
+                emoji: '🧚', 
+                power: 'La fée de la nature',
+                description: 'Verdina fait pousser des fleurs partout où elle passe !',
+                unlockScore: 6,
+                image: 'https://img.sanishtech.com/u/fc520aa9810662edcf9ec3470d80038d.png'
+            },
+            { 
+                id: 'captain', 
+                name: 'Captain Tri', 
+                emoji: '🦸', 
+                power: 'Le super-héros',
+                description: 'Captain Tri protège la planète avec ses super pouvoirs !',
+                unlockScore: 9,
+                image: 'https://img.sanishtech.com/u/42b26589addceb5e46d526130b52b82e.png'
+            },
+            { 
+                id: 'ecolo', 
+                name: 'Ecolo', 
+                emoji: '🐉', 
+                power: 'Le dragon gardien',
+                description: 'Ecolo garde notre belle planète propre et verte !',
+                unlockScore: 12,
+                image: 'https://img.sanishtech.com/u/ec8b6db8f96c017ec48cb882ad8d2b61.png'
+            }
+        ];
+
+        const badges = [
+            { id: 'first-star', name: 'Première Étoile', emoji: '⭐', description: 'Ton premier tri réussi !', requirement: 1, color: 'yellow' },
+            { id: 'beginner', name: 'Débutant Super', emoji: '🌟', description: 'Tu commences bien !', requirement: 2, color: 'peach' },
+            { id: 'tri-genius', name: 'Génie du Tri', emoji: '🧠', description: 'Tu es trop fort !', requirement: 4, color: 'pink' },
+            { id: 'eco-hero', name: 'Héros Écolo', emoji: '🦸', description: 'Tu protèges la planète !', requirement: 5, color: 'mint' },
+            { id: 'recycle-king', name: 'Roi du Recyclage', emoji: '👑', description: 'Tu es le roi du tri !', requirement: 7, color: 'lavender' },
+            { id: 'rainbow', name: 'Arc-en-Ciel', emoji: '🌈', description: 'Toutes les couleurs du tri !', requirement: 8, color: 'aqua' },
+            { id: 'master', name: 'Grand Maître', emoji: '🎓', description: 'Tu maîtrises tout !', requirement: 9, color: 'blue' },
+            { id: 'magician', name: 'Grand Magicien', emoji: '🪄', description: 'Tu fais de la magie !', requirement: 10, color: 'pink' },
+            { id: 'champion', name: 'Champion Ultime', emoji: '🏆', description: 'Tu es le meilleur !', requirement: 11, color: 'yellow' },
+            { id: 'legend', name: 'Légende Cosmique', emoji: '💫', description: 'Tu es une légende !', requirement: 12, color: 'lavender' },
+            { id: 'planet-saver', name: 'Sauveur Planétaire', emoji: '🌍', description: 'Tu sauves la Terre !', requirement: 12, color: 'mint' },
+            { id: 'ultimate', name: 'Trieur Suprême', emoji: '✨', description: 'PERFECTION ABSOLUE !', requirement: 12, color: 'aqua' }
+        ];
+
+        // Fonction pour mélanger un tableau
+        function shuffleArray(array) {
+            const shuffled = [...array];
+            for (let i = shuffled.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+            }
+            return shuffled;
+        }
+
+        // État du jeu
+        let playerName = '';
+        let score = 0;
+        let remainingWaste = [];
+        let unlockedCharacters = new Set();
+        let unlockedBadges = new Set();
+        let draggedItem = null;
+
+        // Éléments DOM
+        const welcomeScreen = document.getElementById('welcome-screen');
+        const tutorialScreen = document.getElementById('tutorial-screen');
+        const gameArea = document.getElementById('game-area');
+        const victoryScreen = document.getElementById('victory-screen');
+        const badgesModal = document.getElementById('badges-modal');
+        const playerNameInput = document.getElementById('player-name');
+        const startBtn = document.getElementById('start-btn');
+        const tutorialBtn = document.getElementById('tutorial-btn');
+        const backToWelcomeBtn = document.getElementById('back-to-welcome-btn');
+        const replayBtn = document.getElementById('replay-btn');
+        const badgeButton = document.getElementById('badge-button');
+        const closeBadgesModal = document.getElementById('close-badges-modal');
+
+        // Initialisation
+        function init() {
+            playerNameInput.addEventListener('input', (e) => {
+                startBtn.disabled = !e.target.value.trim();
+            });
+
+            playerNameInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && playerNameInput.value.trim()) {
+                    startGame();
+                }
+            });
+
+            startBtn.addEventListener('click', startGame);
+            tutorialBtn.addEventListener('click', showTutorial);
+            backToWelcomeBtn.addEventListener('click', hideTutorial);
+            replayBtn.addEventListener('click', resetGame);
+            badgeButton.addEventListener('click', () => showBadgesModal());
+            closeBadgesModal.addEventListener('click', () => badgesModal.classList.remove('show'));
+            badgesModal.addEventListener('click', (e) => {
+                if (e.target === badgesModal) {
+                    badgesModal.classList.remove('show');
+                }
+            });
+            document.getElementById('close-modal-btn').addEventListener('click', closeCharacterModal);
+
+            setupBins();
+        }
+
+        function showTutorial() {
+            welcomeScreen.classList.add('hidden');
+            tutorialScreen.classList.remove('hidden');
+        }
+
+        function hideTutorial() {
+            tutorialScreen.classList.add('hidden');
+            welcomeScreen.classList.remove('hidden');
+        }
+
+        function startGame() {
+            playerName = playerNameInput.value.trim();
+            if (!playerName) return;
+
+            welcomeScreen.classList.add('hidden');
+            gameArea.classList.remove('hidden');
+            remainingWaste = shuffleArray([...wasteItems]);
+            renderWaste();
+            renderCharacters();
+            renderBadgesInModal();
+            updateScore();
+            updateProgress();
+        }
+
+        function showBadgesModal() {
+            renderBadgesInModal();
+            badgesModal.classList.add('show');
+        }
+
+        function renderBadgesInModal() {
+            const grid = document.getElementById('badges-grid');
+            grid.innerHTML = '';
+            
+            badges.forEach(badge => {
+                const isUnlocked = unlockedBadges.has(badge.id);
+                const div = document.createElement('div');
+                div.className = `badge-card badge-${badge.color} ${isUnlocked ? 'unlocked' : 'locked'}`;
+                
+                div.innerHTML = `
+                    <div class="badge-emoji-icon">${badge.emoji}</div>
+                    <div class="badge-name">${badge.name}</div>
+                    <div class="badge-description">${badge.description}</div>
+                    ${!isUnlocked ? `<div class="badge-requirement">${badge.requirement} ${badge.requirement === 1 ? 'point' : 'points'}</div>` : ''}
+                `;
+                
+                grid.appendChild(div);
+            });
+
+            document.getElementById('badges-count').textContent = unlockedBadges.size;
+            document.getElementById('unlocked-badges-count').textContent = unlockedBadges.size;
+        }
+
+        function renderWaste() {
+            const container = document.getElementById('waste-container');
+            container.innerHTML = '';
+            
+            remainingWaste.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'waste-item';
+                div.draggable = true;
+                div.dataset.id = item.id;
+                div.innerHTML = `
+                    <span class="waste-emoji">${item.emoji}</span>
+                    <span class="waste-name">${item.name}</span>
+                `;
+                
+                div.addEventListener('dragstart', handleDragStart);
+                div.addEventListener('dragend', handleDragEnd);
+                
+                container.appendChild(div);
+            });
+            
+            document.getElementById('waste-count').textContent = `(${remainingWaste.length})`;
+        }
+
+        function renderCharacters() {
+            const container = document.getElementById('characters-container');
+            container.innerHTML = '';
+            
+            characters.forEach(character => {
+                const div = document.createElement('div');
+                const isUnlocked = unlockedCharacters.has(character.id);
+                div.className = `character-card ${isUnlocked ? 'unlocked' : 'locked'}`;
+                
+                div.innerHTML = `
+                    ${!isUnlocked ? '<div class="lock-overlay">🔒</div>' : ''}
+                    <img src="${character.image}" alt="${character.name}" class="character-image">
+                    <h3 class="character-name">${character.name}</h3>
+                    ${isUnlocked ? `
+                        <div class="character-power">${character.power}</div>
+                        <div class="character-description">${character.description}</div>
+                    ` : `
+                        <div class="unlock-requirement">Débloque à ${character.unlockScore} points</div>
+                    `}
+                `;
+                
+                container.appendChild(div);
+            });
+            
+            document.getElementById('character-count').textContent = 
+                `(${unlockedCharacters.size}/${characters.length})`;
+        }
+
+        function setupBins() {
+            const bins = document.querySelectorAll('.bin');
+            bins.forEach(bin => {
+                bin.addEventListener('dragover', handleDragOver);
+                bin.addEventListener('dragleave', handleDragLeave);
+                bin.addEventListener('drop', handleDrop);
+            });
+        }
+
+        function handleDragStart(e) {
+            const itemId = e.target.closest('.waste-item').dataset.id;
+            draggedItem = wasteItems.find(item => item.id === itemId);
+            e.target.closest('.waste-item').classList.add('dragging');
+        }
+
+        function handleDragEnd(e) {
+            e.target.closest('.waste-item').classList.remove('dragging');
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('active');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('active');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const bin = e.currentTarget;
+            bin.classList.remove('active');
+            
+            if (!draggedItem) return;
+            
+            const binType = bin.dataset.bin;
+            
+            if (draggedItem.correctBin === binType) {
+                score++;
+                remainingWaste = remainingWaste.filter(item => item.id !== draggedItem.id);
+                showFeedback('Bravo ! +1 point 🎉', 'success');
+                updateScore();
+                updateProgress();
+                checkBadges();
+                
+                const isGameFinished = remainingWaste.length === 0;
+                checkUnlocks(isGameFinished);
+                
+                renderWaste();
+                
+                if (isGameFinished) {
+                    setTimeout(showVictory, 1000);
+                }
+            } else {
+                showFeedback('Oops ! Mauvaise poubelle 😅', 'error');
+            }
+            
+            draggedItem = null;
+        }
+
+        function updateScore() {
+            document.getElementById('score').textContent = score;
+        }
+
+        function updateProgress() {
+            const nextCharacter = characters.find(char => !unlockedCharacters.has(char.id));
+            if (nextCharacter) {
+                const progress = (score / nextCharacter.unlockScore) * 100;
+                document.getElementById('progress-label').textContent = `✨ Prochain personnage: ${nextCharacter.name}`;
+                document.getElementById('progress-text').textContent = `${score}/${nextCharacter.unlockScore}`;
+                document.getElementById('progress-fill').style.width = `${Math.min(progress, 100)}%`;
+            } else {
+                document.getElementById('progress-label').textContent = '✨ Tous les personnages débloqués !';
+                document.getElementById('progress-text').textContent = `${score}/${score}`;
+                document.getElementById('progress-fill').style.width = '100%';
+            }
+        }
+
+        function checkBadges() {
+            badges.forEach(badge => {
+                if (score >= badge.requirement && !unlockedBadges.has(badge.id)) {
+                    unlockedBadges.add(badge.id);
+                    renderBadgesInModal();
+                }
+            });
+        }
+
+        function checkUnlocks(isGameFinished) {
+            characters.forEach(character => {
+                if (score === character.unlockScore && !unlockedCharacters.has(character.id)) {
+                    unlockedCharacters.add(character.id);
+                    createConfetti();
+                    
+                    if (!isGameFinished) {
+                        setTimeout(() => {
+                            showCharacterModal(character);
+                            renderCharacters();
+                        }, 500);
+                    } else {
+                        renderCharacters();
+                    }
+                }
+            });
+        }
+
+        function showCharacterModal(character) {
+            document.getElementById('modal-player-name').textContent = playerName;
+            document.getElementById('modal-character-image').src = character.image;
+            document.getElementById('modal-character-name').textContent = character.emoji + ' ' + character.name;
+            document.getElementById('modal-character-power').textContent = character.power;
+            document.getElementById('modal-character-description').textContent = character.description;
+            document.getElementById('character-modal').classList.add('show');
+            createConfetti();
+        }
+
+        function closeCharacterModal() {
+            document.getElementById('character-modal').classList.remove('show');
+        }
+
+        function showFeedback(message, type) {
+            const feedback = document.getElementById('feedback');
+            const text = document.getElementById('feedback-text');
+            
+            text.textContent = message;
+            feedback.className = `feedback ${type} show`;
+            
+            setTimeout(() => {
+                feedback.classList.remove('show');
+            }, 2000);
+        }
+
+        function createConfetti() {
+            const colors = ['#10b981', '#3b82f6', '#f59e0b', '#ec4899', '#8b5cf6'];
+            
+            for (let i = 0; i < 30; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + '%';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.animationDelay = Math.random() * 0.3 + 's';
+                
+                document.body.appendChild(confetti);
+                
+                setTimeout(() => confetti.remove(), 1500);
+            }
+        }
+
+        function showVictory() {
+            createConfetti();
+            
+            document.getElementById('victory-player-name').textContent = playerName;
+            document.getElementById('final-score').textContent = score;
+            
+            // Afficher les badges
+            const badgesGrid = document.getElementById('victory-badges-grid');
+            badgesGrid.innerHTML = '';
+            const unlockedBadgesList = badges.filter(b => unlockedBadges.has(b.id));
+            
+            if (unlockedBadgesList.length > 0) {
+                document.getElementById('victory-badges-section').style.display = 'block';
+                unlockedBadgesList.forEach(badge => {
+                    const div = document.createElement('div');
+                    div.className = `victory-badge badge-${badge.color}`;
+                    div.innerHTML = `
+                        <div class="victory-badge-emoji">${badge.emoji}</div>
+                        <div class="victory-badge-name">${badge.name}</div>
+                    `;
+                    badgesGrid.appendChild(div);
+                });
+            }
+            
+            // Afficher les personnages
+            const charsGrid = document.getElementById('victory-characters-grid');
+            charsGrid.innerHTML = '';
+            const unlockedChars = characters.filter(c => unlockedCharacters.has(c.id));
+            
+            if (unlockedChars.length > 0) {
+                document.getElementById('victory-characters-section').style.display = 'block';
+                unlockedChars.forEach(character => {
+                    const div = document.createElement('div');
+                    div.className = 'victory-character';
+                    div.innerHTML = `
+                        <img src="${character.image}" alt="${character.name}" class="victory-character-image">
+                        <h3 class="character-name">${character.name}</h3>
+                        <p class="character-power">${character.power}</p>
+                    `;
+                    charsGrid.appendChild(div);
+                });
+            }
+            
+            gameArea.classList.add('hidden');
+            victoryScreen.classList.remove('hidden');
+            victoryScreen.classList.add('show');
+        }
+
+        function resetGame() {
+            score = 0;
+            remainingWaste = [];
+            unlockedCharacters.clear();
+            unlockedBadges.clear();
+            playerNameInput.value = '';
+            startBtn.disabled = true;
+            
+            victoryScreen.classList.add('hidden');
+            victoryScreen.classList.remove('show');
+            welcomeScreen.classList.remove('hidden');
+        }
+
+        init();
+    </script>
+</body>
+</html>
